@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 from model import db_module
 from model import sql_module
 import json
@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 bp = Blueprint('login_bp',__name__, url_prefix='/login')
 
-@bp.route("/", methods=['POST'])
+@bp.route("", methods=['POST'])
 def login():
     if request.method == 'POST':
         user_id = request.args.get('id')
@@ -38,6 +38,7 @@ def login():
         js = OrderedDict()
         js['login']=login_num
         js['approve']=approve_num
+        js['id']=session['id']
         data.append(js)
         obj = json.dumps(data,ensure_ascii = False)
         return obj
