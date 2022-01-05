@@ -19,6 +19,13 @@ bp = Blueprint('profile_bp',__name__.url_prefix='/profile')
 
 
 @bp.route("/profile/pass_change",methods=['POST'])
+def pass_change():
+    if request.method=='POST':
+        user_pass = request.args.get('pass')
+        func = sql_module.sqlfunc()
+
+        return func.change_password(session['id'])
+
 
 
 

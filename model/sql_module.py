@@ -6,6 +6,11 @@ import numpy as np
 import pymysql
 from . import db_module
 
+host = '18.118.131.221'
+db_id='benny'
+pw='benny'
+db_name='bappy'
+
 class sql_func():
     def __init__(self):
         self.sql_db = db_module.Database()
@@ -28,21 +33,17 @@ class sql_func():
         sql = """select * from bd_member where m_id = \'%s\'"""%(user_id)
         return self.sql_db.executeAll(sql)
 
+    def change_password(self, user_id ,user_pass):
+        sql = """"""
 
 
 
-host = '127.0.0.1'
-db_id='bappy'
-pw='bappy'
-db_name='bappy'
+
+
 
 def comment_last_idx():
 
-<<<<<<< Updated upstream
     conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
-=======
-    conn = pymysql.connect(host=host, port=3306, user=id, password=pw, db=db_name, charset='utf8')
->>>>>>> Stashed changes
     curs=conn.cursor(pymysql.cursors.DictCursor)
     sql = """select co_idx from bd_comment order by co_idx desc limit 1"""
     curs.execute(sql)
@@ -54,11 +55,8 @@ def comment_last_idx():
 
 def board_last_idx():
 
-<<<<<<< Updated upstream
     conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
-=======
-    conn = pymysql.connect(host=host, port=3306, user=id, password=pw, db=db_name, charset='utf8')
->>>>>>> Stashed changes
+
     curs=conn.cursor(pymysql.cursors.DictCursor)
     sql = """select b_idx from bd_board order by b_idx desc limit 1"""
     curs.execute(sql)
@@ -70,12 +68,7 @@ def board_last_idx():
 
 
 def member_last_idx():
-<<<<<<< Updated upstream
-
     conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
-=======
-    conn = pymysql.connect(host=host, port=3306, user=id, password=pw, db=db_name, charset='utf8')
->>>>>>> Stashed changes
     curs=conn.cursor(pymysql.cursors.DictCursor)
     sql = """select m_idx from bd_member order by m_idx desc limit 1"""
     curs.execute(sql)
@@ -86,5 +79,5 @@ def member_last_idx():
     return rows[0]['m_idx']
 
 
-comment_last_idx()
-board_last_idx()
+#comment_last_idx()
+#board_last_idx()
