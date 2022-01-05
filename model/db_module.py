@@ -3,10 +3,10 @@ import pymysql
 class Database():
     def __init__(self):
         self.db = pymysql.connect(
-            host='18.118.131.221',
-            id='bappy',
-            pw='bappy',
-            db_name='bappy'
+            host='127.0.0.1',
+            user='bappy',
+            password='bappy',
+            db='bappy'
         )
         self.cursor = self.db.cursor(pymysql.cursors.DictCursor)
 
@@ -18,12 +18,7 @@ class Database():
         row = self.cursor.fetchone()
         return row
 
-    def executeAll(self, quey, args={}):
+    def executeAll(self, query, args={}):
         self.cursor.execute(query, args)
         row = self.cursor.fetchall()
         return row
-
-    def commit():
-        self.db.commit()
-    def close():
-        self.db.close()
