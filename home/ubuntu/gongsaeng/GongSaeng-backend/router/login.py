@@ -18,6 +18,16 @@ def login():
             login_num="false"
         else:
             login_num="true"
+            session['id']=rows[0]['m_id']
+            session['name']=rows[0]['m_name']
+            session['gender']=rows[0]['m_gender']
+            session['mail']=rows[0]['m_mail']
+            session['department']=rows[0]['m_department']
+            session['nickname']=rows[0]['m_nickname']
+            session['birth']=rows[0]['m_birth']
+            session['phone']=rows[0]['m_phone']
+            session['profile']=rows[0]['m_profile']
+            session['job']=rows[0]['m_job']
 
         if(rows[0]['approve']==0):
             approve_num = "false"
