@@ -1,7 +1,7 @@
-from .model import db_module
-from .model import sql_module
+import model.db_module
+import model.sql_module
 
-db_class=db_module.database()
+db_class=db_module.Database()
 
 
 user_pass ="12345"

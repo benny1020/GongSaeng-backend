@@ -1,12 +1,14 @@
 from model import db_module
 from model import sql_module
 
+
 db_class=db_module.Database()
 
-ids = "jdc0407"
 
-sql = """select count(*) from bd_member where m_id = \'%s\'
-"""%(ids)
+user_id = "ygm1020"
+#sql = """select * from bd_member where m_id =\'%s\' """%(user_id)
+sql = """SELECT * FROM bappy.bd_member """
 
-rows=db_class.executeAll(sql)
-print(len(rows))
+
+rows = db_class.executeAll(sql)
+print(rows)

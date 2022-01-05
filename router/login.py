@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 bp = Blueprint('login_bp',__name__, url_prefix='/login')
 
-@bp.route("/", methods=['POST'])
+@bp.route("", methods=['POST'])
 def login():
     if request.method == 'POST':
         user_id = request.args.get('id')

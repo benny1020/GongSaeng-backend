@@ -37,7 +37,32 @@ class sql_func():
         sql = """ update bd_member set m_pass = \'%s\' where m_id = \'%s\'
         """%(user_pass,user_id)
         self.sql_db.execute(sql)
-        self.sql_db.commit()
+
+    def account_edit(self, user_name, user_mail, user_phone, user_id):
+        sql = """update bd_member set m_name = \'%s\', m_mail = \'%s\', m_phone = \'%s\' where m_id = \'%s\'
+        """%(user_name, user_mail, user_phone, user_id)
+        self.sql_db.execute(sql)
+
+    def profile_edit(self, nickname, job, profile, profile_image_url,user_id):
+        sql = """update bd_member set m_nickname = \'%s\', m_job = \'%s\', m_profile = \'%s\', profile_image_url = \'%s\' where m_id = \'%s\'
+        """%(nickname, job, profile, profile_image_url,user_id)
+        self.sql_db.execute(sql)
+
+    def get_mate_list(self, department):
+        sql = """select * from bd_member where m_department = \'%s\'"""%(department)
+        return self.sql_db.executeAll(sql)
+
+    def get_comment(self, parent_num):
+        sql = """select * from bd_comment where b_idx = \'%s\'"""%(parent_num)
+        return self.sql_db.executeAll(sql)
+
+    def get_user_image_url(self, user_id):
+        sql = """ select profile_image_url from bd_member where m_id = \'%s\'"""%(user_id)
+        return self.sql_db.executeAll(sql)[0]['profile_image_url']
+
+
+
+    def __del__(self):
         self.sql_db.close()
 
 

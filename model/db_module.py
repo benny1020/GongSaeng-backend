@@ -2,7 +2,8 @@ import pymysql
 class Database():
     def __init__(self):
         self.db = pymysql.connect(
-            host='18.118.131.221',
+            #host='18.118.131.221',
+            host='127.0.0.1',
             user='benny',
             password='benny',
             db='bappy'
@@ -11,13 +12,20 @@ class Database():
 
     def execute(self, query, args={}):
         self.cursor.execute(query,args)
+        self.db.commit()
+        #self.db.close()
 
     def executeOne(self, query, args={}):
         self.cursor.execute(query,args)
         row = self.cursor.fetchone()
-        return row
+        self.db.commit()
+        #return row
 
     def executeAll(self, query, args={}):
         self.cursor.execute(query, args)
         row = self.cursor.fetchall()
+        self.db.commit()
         return row
+    def close(self):
+        self.db.commit()
+        self.db.close()

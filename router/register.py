@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 bp = Blueprint('register_bp', __name__,url_prefix='/register')
 
-@bp.route("/",methods=['POST'])
+@bp.route("",methods=['POST'])
 def get_register():
     if request.method == 'POST':
         department = request.args.get('department')
@@ -22,11 +22,11 @@ def get_register():
 
         db_class = db_module.Database()
         sql = """insert into bd_member(m_department,m_name,m_birth,
-                m_phone,m_id,m_pass,m_nickname,m_idx,approve)
+                m_phone,m_id,m_pass,m_nickname,m_idx,approve,profile_image_url)
                 values(
-                '%s', '%s', '%s', '%s', '%s', '%s','%s', '%d','%d'
+                '%s', '%s', '%s', '%s', '%s', '%s','%s', '%d','%d','%s'
                 )
-        """%(department,name,birth,phone,user_id,password,nickname,int(index),0)
+        """%(department,name,birth,phone,user_id,password,nickname,int(index),0,"default")
         db_class.execute(sql)
         db_class.db.commit()
         db_class.db.close()
@@ -52,7 +52,7 @@ def get_department():
 @bp.route("/idCheck", methods=['GET'])
 def idCheck():
     if request.method == 'GET':
-        id = request.args.get('id')
+        id = str(request.args.get('id'))
         func = sql_module.sql_func()
         return func.idCheck(id)
 
