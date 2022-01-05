@@ -34,7 +34,12 @@ class sql_func():
         return self.sql_db.executeAll(sql)
 
     def change_password(self, user_id ,user_pass):
-        sql = """"""
+        sql = """ update bd_member set m_pass = \'%s\' where m_id = \'%s\'
+        """%(user_pass,user_id)
+        self.sql_db.execute(sql)
+        self.sql_db.commit()
+        self.sql_db.close()
+
 
 
 
