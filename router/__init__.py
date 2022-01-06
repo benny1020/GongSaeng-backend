@@ -1,4 +1,4 @@
-from flask import Flask,session
+from flask import Flask,session,request
 import json
 from collections import OrderedDict
 from . import register
@@ -26,11 +26,17 @@ app.register_blueprint(notify.bp)
 #app.config['db_ip']="18.118.131.221"
 #app.config['db_ip']="127.0.0.1"
 
-@app.route('/test')
+def request_test(temp):
+    return temp.args.get('temp')
+
+
+@app.route('/test',methods=['POST'])
 def test():
-    func = sql_module.sql_func()
-    res = func.get_community_name(0)
-    return res[0]['bd_name']
+    if request.method == 'POST':
+        uploaded_files = request.files.getlist("file")
+        return str(uploaded_files)
+    #return request_test(request.args)
+    #return res[0]['bd_name']
 
 
 

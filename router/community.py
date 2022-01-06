@@ -7,14 +7,20 @@ from datetime import *
 
 bp = Blueprint('community_bp', __name__, url_prefix='/community')
 
-
+"""
 @bp.route("/write_community", methods = ['POST'])
 def write_community():
     if request.method == 'POST':
-        if request.files['file'].filename == "":
-            return "false"
-        else:
-            return "true"
+        title = request.args.get('title')
+        contents = request.args.get('contents')
+        regdate = request.args.get('time')
+        code = request.args.get('code')
+        if code == 0: # 함께게시판인경우
+
+        elif code == 1: # 장터게시판인경우
+
+        else:  #자유 건의 유저추가 등 나머지
+"""
 
 @bp.route("/find_post_by_index", methods = ['GET'])
 def find_post_by_index():
