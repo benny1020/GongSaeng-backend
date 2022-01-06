@@ -3,6 +3,7 @@ from model import db_module
 from model import sql_module
 import json
 from collections import OrderedDict
+import os
 
 
 
@@ -11,12 +12,28 @@ bp = Blueprint('profile_bp',__name__,url_prefix='/profile')
 @bp.route("/edit",methods=['POST'])
 def profileEdit():
     if request.method == 'POST':
+        func = sql_module.sql_func()
+
         nickname = request.args.get('nickname')
         job = request.args.get('job')
         profile = request.args.get('profile')
-        profile_image_url = request.args.get('profile_image_url')
-        func = sql_module.sql_func()
-        func.profile_edit(nickname,job,profile,profile_image_url,session['id'])
+
+        if func.nicknameCheck(nickname) == "false":
+            return "false"
+        
+        file = request.files['file']
+        if file.filename !='':
+            #file = request.files['file']
+            file_num = len(os.listdir('./image/'))
+            file.save("./image/"+str(file_num)+".jpg")
+            url = str(file_num)
+        #profile_image_url = request.args.get('profile_image_url')
+            func.profile_edit(nickname,job,profile,url,session['id'])
+            return url
+
+        else:
+            func = sql_module.sql_func()
+            func.profile_edit_noimage(nickname, job, profile, session['id'])
         return "true"
 
 

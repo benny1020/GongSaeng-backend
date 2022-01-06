@@ -48,6 +48,11 @@ class sql_func():
         """%(nickname, job, profile, profile_image_url,user_id)
         self.sql_db.execute(sql)
 
+    def profile_edit_noimage(self, nickname, job, profile, user_id):
+        sql = """update bd_member set m_nickname = \'%s\', m_job = \'%s\', m_profile = \'%s\' where m_id = \'%s\'
+        """%(nickname, job, profile, user_id)
+        self.sql_db.execute(sql)
+
     def get_mate_list(self, department):
         sql = """select * from bd_member where m_department = \'%s\'"""%(department)
         return self.sql_db.executeAll(sql)
