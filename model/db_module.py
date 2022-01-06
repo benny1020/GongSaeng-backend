@@ -24,8 +24,8 @@ class Database():
     def executeAll(self, query, args={}):
         self.cursor.execute(query, args)
         row = self.cursor.fetchall()
-        self.db.commit()
+        #self.db.commit()
         return row
     def close(self):
-        self.db.commit()
+        #self.db.commit()
         self.db.close()

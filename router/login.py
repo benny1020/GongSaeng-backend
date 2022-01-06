@@ -14,7 +14,7 @@ def login():
         user_pass = request.args.get('pass')
         func = sql_module.sql_func()
         rows = func.loginCheck(user_id)
-        if len(rows) and (rows[0]['m_pass'] == user_pass) ==0:
+        if len(rows)==0 or (rows[0]['m_pass'] != user_pass):
             login_num="false"
         else:
             login_num="true"
@@ -28,8 +28,9 @@ def login():
             session['phone']=rows[0]['m_phone']
             session['profile']=rows[0]['m_profile']
             session['job']=rows[0]['m_job']
+            session['profile_image_url']=rows[0]['profile_image_url']
 
-        if(rows[0]['approve']==0):
+        if(len(rows) == 0 or rows[0]['approve']==0):
             approve_num = "false"
         else:
             approve_num = "true"
@@ -38,7 +39,6 @@ def login():
         js = OrderedDict()
         js['login']=login_num
         js['approve']=approve_num
-        js['id']=session['id']
         data.append(js)
         obj = json.dumps(data,ensure_ascii = False)
         return obj

@@ -1,14 +1,6 @@
 from model import db_module
 from model import sql_module
 
+func = sql_module.sql_func()
 
-db_class=db_module.Database()
-
-
-user_id = "ygm1020"
-#sql = """select * from bd_member where m_id =\'%s\' """%(user_id)
-sql = """SELECT * FROM bappy.bd_member """
-
-
-rows = db_class.executeAll(sql)
-print(rows)
+print(func.get_community_name(0))

@@ -1,8 +1,9 @@
-from flask import Blueprint,request
+from flask import Blueprint,request, session
 from model import db_module
 from model import sql_module
 import json
 from collections import OrderedDict
+from datetime import *
 
 
 
@@ -35,5 +36,14 @@ def read_comment():
 
 
 
-#@bp.route("/write_comment",methods=['POST'])
-#def write_comment():
+@bp.route("/write_comment",methods=['POST'])
+def write_comment():
+    if request.method == 'POST':
+        parent_num = request.args.get('parent_num')
+        contents = request.args.get('contents')
+        time = datetime.strptime(request.args.get('time'), '%Y-%m-%d %H:%M:%S')
+        func = sql_module.sql_func()
+        func.write_comment(parent_num, session['id'],session['nickname'],contents,time)
+        func.increase_comment_num(parent_num)
+
+        return "true"

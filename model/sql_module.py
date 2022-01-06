@@ -60,6 +60,72 @@ class sql_func():
         sql = """ select profile_image_url from bd_member where m_id = \'%s\'"""%(user_id)
         return self.sql_db.executeAll(sql)[0]['profile_image_url']
 
+    def write_comment(self, parent_num,user_id, user_nickname, contents, time):
+        idx = comment_last_idx()+1
+        sql = """insert into bd_comment(co_idx, b_idx, m_id, m_nickname, co_contents, co_regdate)
+            values('%s','%s','%s','%s','%s','%s')
+        """%(idx,parent_num,user_id,user_nickname,contents, time)
+        self.sql_db.execute(sql)
+
+    def get_notice_list(self, department):
+        sql = """select * from notice_list where department = \'%s\'"""%(department)
+        return self.sql_db.executeAll(sql)
+
+    def get_community_index(self):
+        sql = """select count(*) as cnt from notice_list"""
+        notice_count = self.sql_db.executeAll(sql)
+        notice_count = notice_count[0]['cnt']
+        sql = """select count(*) as cnt from bd_board"""
+        board_count = self.sql_db.executeAll(sql)
+        board_count = board_count[0]['cnt']
+        return notice_count + board_count
+
+    def get_community_post(self,code):
+        sql = """select * from bd_board where bc_code = \'%s\'"""%(code)
+        return self.sql_db.executeAll(sql)
+
+    def get_community_post_id(self, user_id):
+        sql = """select * from bd_board where m_id = \'%s\'"""%(user_id)
+        return self.sql_db.executeAll(sql)
+
+    def get_gather_status(self):
+        sql = """select * from bd_together """
+        return self.sql_db.executeAll(sql)
+
+    def get_comment_num(self, b_idx):
+        sql = """select count(*) as cnt from bd_comment where b_idx = %s"""%(b_idx)
+        return self.sql_db.executeAll(sql)[0]['cnt']
+
+    def get_market_info(self):
+        sql = """select * from bd_market """
+        return self.sql_db.executeAll(sql)
+
+    def increase_comment_num(self, b_idx):
+        sql = """ update bd_board set b_cnt = b_cnt + 1 where b_idx = \'%s\'"""%(b_idx)
+        self.sql_db.execute(sql)
+
+    def get_community_name(self, b_code):
+        sql = """select bd_name from bd_list where bd_code = \'%s\'"""%(b_code)
+        return self.sql_db.executeAll(sql)[0]['bd_name']
+
+    def get_comment_byid(self,user_id):
+        sql = """select * from bd_comment where m_id = \'%s\'"""%(user_id)
+        return self.sql_db.executeAll(sql)
+
+    def get_community_code_byidx(self, parent_num):
+        sql = """select * from bd_board where b_idx = \'%s\'"""%(parent_num)
+        return self.sql_db.executeAll(sql)[0]['bc_code']
+
+    def get_community_name_byidx(self,idx):
+        return self.get_community_name(self.get_community_code_byidx(idx))
+
+    def get_community_post_byidx(self, idx):
+        sql = """ select * from bd_board where b_idx = \'%s\'"""%(idx)
+        return self.sql_db.executeAll(sql)[0]
+
+
+
+
 
 
     def __del__(self):
