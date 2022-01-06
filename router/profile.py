@@ -20,7 +20,7 @@ def profileEdit():
 
         if func.nicknameCheck(nickname) == "false":
             return "false"
-        
+
         file = request.files['file']
         if file.filename !='':
             #file = request.files['file']
@@ -54,9 +54,6 @@ def account_manage():
 
 
 
-
-
-
 @bp.route("/pass_change",methods=['POST','GET'])
 def pass_change():
     #print(session['id'])
@@ -68,6 +65,45 @@ def pass_change():
         #print(session['id'])
         func.change_password(session['id'],user_pass)
         return "true"
+
+@bp.route("/mypost", methods=['GET'])
+def mypost():
+    if request.method=='GET':
+        func = sql_module.sql_func()
+        user_id = session['id']
+        res = func.get_community_post_id(user_id)
+        data = []
+        for i in range(len(res)):
+            js = OrderedDict()
+            js['title'] = res[i]['b_title']
+            js['board_name'] = func.get_community_name(res[i]['bc_code'])
+            js['time'] = res[i]['b_regdate']
+            js['comment_num'] = res[i]['b_cnt']
+            js['post_index'] = res[i]['b_idx']
+            data.append(js)
+
+        obj = json.dumps(data, ensure_ascii = False)
+        return obj
+
+@bp.route("/mycomment", methods=['GET'])
+def mycomment():
+    if request.method == 'GET':
+        func = sql_module.sql_func()
+        user_id = session['id']
+        res = func.get_comment_byid(user_id)
+
+        data = []
+
+        for i in range(len(res)):
+            js = OrderedDict()
+            js['title'] = res[i]['co_contents']
+            js['board_name'] = func.get_community_name_byidx(res[i]['b_idx'])
+            js['time'] = res[i]['co_regdate']
+            js['post_index'] = res[i]['b_idx']
+            data.append(js)
+
+        obj = json.dumps(data, ensure_ascii = False)
+        return obj
 
 
 
