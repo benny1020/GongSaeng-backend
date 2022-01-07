@@ -1,26 +1,50 @@
 from flask import Blueprint,request, session
 from model import db_module
 from model import sql_module
+from model import image_module
 import json
 from collections import OrderedDict
 from datetime import *
 
 bp = Blueprint('community_bp', __name__, url_prefix='/community')
 
-"""
+
 @bp.route("/write_community", methods = ['POST'])
 def write_community():
     if request.method == 'POST':
+        func = sql_module.sql_func()
         title = request.args.get('title')
         contents = request.args.get('contents')
-        regdate = request.args.get('time')
+        time = datetime.strptime(request.args.get('time'), '%Y-%m-%d %H:%M:%S')
         code = request.args.get('code')
-        if code == 0: # 함께게시판인경우
+        user_id = session['id']
+        nickname = session['nickname']
+        idx = func.get_community_index()+1
 
-        elif code == 1: # 장터게시판인경우
+        # 기본적인거 작성
+        func.write_community(idx, code, user_id, nickname, title, contents, time)
 
-        else:  #자유 건의 유저추가 등 나머지
-"""
+        #-----이미지 처리
+        if 'image' in request.files: #이미지 있는경우
+            image_url = image_module.save_image(request.files.getlist("image"))
+            # [1,2,3] -> "1,2,3" 으로 바꿔서
+            func.write_community_image(idx,image_module.url_to_db(image_url))
+
+
+
+
+        if code == '0': # 함께게시판인경우
+            print("함께게시판입니다.")
+            func.write_together_false(idx)
+
+        elif code == '1': # 장터게시판인경우
+            price = request.args.get('price')
+            func.write_market_initial(idx, price)
+
+        #else:  #자유 건의 유저추가 등 나머지
+        return "true"
+
+
 
 @bp.route("/find_post_by_index", methods = ['GET'])
 def find_post_by_index():
@@ -79,7 +103,7 @@ def read_community():
                 if res[i]['image_url'] == None:
                     js['image_url']="None"
                 else:
-                    js['image_url'] = res[i]['image_url']
+                    js['image_url'] = func.db_to_url(res[i]['image_url'])
                 js['gather_status'] = gather_status[i]['gather_status']
                 data.append(js)
 

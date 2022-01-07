@@ -21,8 +21,8 @@ def profileEdit():
         if func.nicknameCheck(nickname) == "false":
             return "false"
 
-        file = request.files['file']
-        if file.filename !='':
+
+        if 'file' in request.files:
             #file = request.files['file']
             file_num = len(os.listdir('./image/'))
             file.save("./image/"+str(file_num)+".jpg")

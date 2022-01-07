@@ -22,7 +22,7 @@ def read_comment():
             js = OrderedDict()
             js["nickname"] = res[i]["m_nickname"]
             js["contents"] = res[i]["co_contents"]
-            js["time"] = res[i]["co_regdate"].strftime('%Y-%m-%d : %H:%m')
+            js["time"] = res[i]["co_regdate"].strftime('%Y-%m-%d %H:%m')
             js["profile_image_url"] = func.get_user_image_url(res[i]["m_id"])
             data.append(js)
 

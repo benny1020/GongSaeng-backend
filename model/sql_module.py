@@ -141,8 +141,7 @@ class sql_func():
 
         #함께게시판 모집 상태 아직안됨
     def write_together_false(self, b_idx):
-        sql = """insert into bd_together(b_idx, gather_status)
-                values('%s' '%s')"""%(b_idx,'0')
+        sql = """insert into bd_together(b_idx, gather_status) values('%s','%s')"""%(b_idx, '0')
         self.sql_db.execute(sql)
 
         #함께게시판 모집 상태 완료로 수정
@@ -153,13 +152,29 @@ class sql_func():
         # 커뮤니티 글 작성 기본적인 것만!
     def write_community(self, index, code, user_id, user_name, title, contents, time):
         #b_cnt = 0
-        sql = """insert into bd_board(b_idx, bc_code, m_id)
-                values('%s','%s','%s','%s','%s','%s','%s')"""%(index,code,user_id,user_name,title,contents,time)
+        sql = """insert into bd_board(b_idx, bc_code, m_id, m_name, b_title, b_contents, b_regdate,b_cnt)
+                values('%s','%s','%s','%s','%s','%s','%s','%d')"""%(index,code,user_id,user_name,title,contents,time,0)
         self.sql_db.execute(sql)
 
+        # 이미지 url 넣기
     def write_community_image(self, idx, image_url):
-        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%s\'"""%(image_url,idx)
+        print("idx: ",idx)
+        print("img url:",image_url)
+        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'"""%(str(image_url),idx)
         self.sql_db.execute(sql)
+
+        #장터게시판 초기 price status 넣기
+    def write_market_initial(self, b_idx, price):
+        sql = """insert into bd_market(b_idx, price, status) values('%s','%s','%s')"""%(b_idx,price,'0')
+        self.sql_db.execute(sql)
+
+        # 판매완료
+    def write_market_true(self, b_idx):
+        sql = """update bd_market set status = \'%s\' where b_idx = \'%s\'"""%('1',b_idx)
+        self.sql_db.execute(sql)
+
+
+
 
 
 

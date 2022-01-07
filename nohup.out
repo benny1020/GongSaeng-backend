@@ -398,3 +398,16 @@ Traceback (most recent call last):
     if nicknameCheck(nickname)!:
                               ^
 SyntaxError: invalid syntax
+ * Serving Flask app 'router' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+Traceback (most recent call last):
+  File "run.py", line 4, in <module>
+    app.run(host="0.0.0.0", port=2222, debug=True)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 920, in run
+    run_simple(t.cast(str, host), port, self, **options)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/werkzeug/serving.py", line 984, in run_simple
+    s.bind(server_address)
+OSError: [Errno 98] Address already in use

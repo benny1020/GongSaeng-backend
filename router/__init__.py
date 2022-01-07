@@ -11,6 +11,7 @@ from . import community
 from . import notify
 from model import db_module
 from model import sql_module
+from model import image_module
 
 
 app = Flask(__name__)
@@ -26,15 +27,23 @@ app.register_blueprint(notify.bp)
 #app.config['db_ip']="18.118.131.221"
 #app.config['db_ip']="127.0.0.1"
 
-def request_test(temp):
-    return temp.args.get('temp')
 
 
 @app.route('/test',methods=['POST'])
 def test():
     if request.method == 'POST':
-        uploaded_files = request.files.getlist("file")
-        return str(uploaded_files)
+        func = sql_module.sql_func()
+        image_url = 30
+        idx = 30
+        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'"""%(str(image_url),idx)
+        func.sql_db.execute(sql)
+        return "true"
+
+
+
+
+
+
     #return request_test(request.args)
     #return res[0]['bd_name']
 
