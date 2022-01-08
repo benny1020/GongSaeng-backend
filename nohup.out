@@ -411,3 +411,171 @@ Traceback (most recent call last):
   File "/home/ubuntu/.local/lib/python3.8/site-packages/werkzeug/serving.py", line 984, in run_simple
     s.bind(server_address)
 OSError: [Errno 98] Address already in use
+ * Serving Flask app 'router' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.31.47.17:2222/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 126-889-352
+ * Serving Flask app 'router' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.31.47.17:2222/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 126-889-352
+ * Serving Flask app 'router' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.31.47.17:2222/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 126-889-352
+118.38.3.128 - - [07/Jan/2022 13:32:00] "POST /comment/write_comment?parent_num=29&contents=f%20y&time=2019-10-20%2020:30:30 HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 2091, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 2076, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/home/ubuntu/gongsaeng/GongSaeng-backend/router/comment.py", line 46, in write_comment
+    func.write_comment(parent_num, session['id'],session['nickname'],contents,time)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/flask/sessions.py", line 79, in __getitem__
+    return super().__getitem__(key)
+KeyError: 'id'
+118.38.3.128 - - [07/Jan/2022 13:32:14] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:32:32] "POST /login?id=ygm1020&pass=12345 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:33:00] "POST /login?id=ygm1020&pass=12345 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:33:05] "POST /login?id=ygm1020&pass=123451 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:33:10] "POST / HTTP/1.1" 405 -
+118.38.3.128 - - [07/Jan/2022 13:33:13] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:33:24] "POST /community/write_community?code=1&title=장터게시판%20테스sadsad&contents=장터께게시판%20테스트%20asdasd&time=2019-10-20%2012:23:24&price=1000000 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:33:42] "POST /comment/write_comment?parent_num=29&contents=f%20y&time=2019-10-20%2020:30:30 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 13:34:39] "POST /community/write_community?code=0&title=함꼐게시판%20테스sadsad&contents=께게시판%20테스트%20asdasd&time=2019-10-20%2012:23:24 HTTP/1.1" 200 -
+206.189.45.70 - - [07/Jan/2022 16:32:08] "HEAD / HTTP/1.0" 200 -
+206.189.45.70 - - [07/Jan/2022 16:32:10] "GET /system_api.php HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:11] "GET /c/version.js HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:12] "GET /streaming/clients_live.php HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:13] "GET /stalker_portal/c/version.js HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:14] "GET /stream/live.php HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:15] "GET /flu/403.html HTTP/1.1" 404 -
+206.189.45.70 - - [07/Jan/2022 16:32:15] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:35:00] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:35:01] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:35:01] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:41:21] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:41:21] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:41:21] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:42:53] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:42:53] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:42:53] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:04] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:04] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:04] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:19] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:19] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:19] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:35] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:35] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:48:35] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:19] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:19] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:19] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:31] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:31] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:51:31] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:52:29] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:52:29] "GET / HTTP/1.1" 200 -
+118.38.3.128 - - [07/Jan/2022 16:52:29] "GET / HTTP/1.1" 200 -
+104.28.102.52 - - [07/Jan/2022 17:02:32] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.52 - - [07/Jan/2022 17:02:33] "GET / HTTP/1.1" 200 -
+104.28.102.52 - - [07/Jan/2022 17:02:33] "GET / HTTP/1.1" 200 -
+104.28.102.64 - - [07/Jan/2022 17:26:13] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.64 - - [07/Jan/2022 17:26:14] "GET / HTTP/1.1" 200 -
+104.28.102.64 - - [07/Jan/2022 17:26:14] "GET / HTTP/1.1" 200 -
+104.28.102.57 - - [07/Jan/2022 17:32:09] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.57 - - [07/Jan/2022 17:32:10] "GET / HTTP/1.1" 200 -
+104.28.100.57 - - [07/Jan/2022 17:35:34] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.57 - - [07/Jan/2022 17:35:34] "GET / HTTP/1.1" 200 -
+104.28.100.49 - - [07/Jan/2022 17:38:09] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.49 - - [07/Jan/2022 17:38:10] "GET / HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 17:40:37] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 17:40:37] "GET / HTTP/1.1" 200 -
+104.28.100.54 - - [07/Jan/2022 17:56:56] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.54 - - [07/Jan/2022 17:57:04] "GET / HTTP/1.1" 200 -
+104.28.100.49 - - [07/Jan/2022 17:58:23] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.49 - - [07/Jan/2022 17:58:24] "GET / HTTP/1.1" 200 -
+104.28.100.66 - - [07/Jan/2022 17:59:44] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.66 - - [07/Jan/2022 17:59:45] "GET / HTTP/1.1" 200 -
+104.28.102.64 - - [07/Jan/2022 21:59:44] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.64 - - [07/Jan/2022 21:59:45] "GET / HTTP/1.1" 200 -
+104.28.100.45 - - [07/Jan/2022 22:01:24] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.45 - - [07/Jan/2022 22:01:24] "GET / HTTP/1.1" 200 -
+104.28.102.52 - - [07/Jan/2022 22:20:07] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.52 - - [07/Jan/2022 22:20:08] "GET / HTTP/1.1" 200 -
+104.28.100.58 - - [07/Jan/2022 22:20:37] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.58 - - [07/Jan/2022 22:20:38] "GET / HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 22:43:13] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 22:43:13] "GET / HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 22:43:15] "GET /notice HTTP/1.1" 404 -
+104.28.100.46 - - [07/Jan/2022 22:43:15] "GET /mate HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 22:43:15] "GET /notice HTTP/1.1" 404 -
+104.28.100.46 - - [07/Jan/2022 22:43:15] "GET /mate HTTP/1.1" 200 -
+104.28.100.46 - - [07/Jan/2022 22:43:25] "GET /image/get_image?image_url=10 HTTP/1.1" 304 -
+104.28.100.46 - - [07/Jan/2022 22:43:27] "GET /notice HTTP/1.1" 404 -
+104.28.100.46 - - [07/Jan/2022 22:43:27] "GET /mate HTTP/1.1" 200 -
+104.28.102.50 - - [07/Jan/2022 22:44:19] "GET /mate HTTP/1.1" 200 -
+104.28.102.50 - - [07/Jan/2022 22:44:19] "GET /notice HTTP/1.1" 404 -
+104.28.84.64 - - [07/Jan/2022 22:51:30] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.58 - - [07/Jan/2022 22:52:16] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+104.28.102.58 - - [07/Jan/2022 22:52:17] "GET / HTTP/1.1" 200 -
+104.28.102.58 - - [07/Jan/2022 22:52:18] "GET /notice HTTP/1.1" 404 -
+104.28.102.58 - - [07/Jan/2022 22:52:19] "GET /mate HTTP/1.1" 200 -
+104.28.102.58 - - [07/Jan/2022 22:52:19] "GET /notice HTTP/1.1" 404 -
+104.28.102.58 - - [07/Jan/2022 22:52:19] "GET /mate HTTP/1.1" 200 -
+87.251.64.61 - - [08/Jan/2022 01:38:49] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+87.251.64.61 - - [08/Jan/2022 01:38:49] "  /*à     Cookie: mstshash=Administr" HTTPStatus.BAD_REQUEST -
+167.248.133.59 - - [08/Jan/2022 04:55:54] code 400, message Bad request version ('mÛíæÊeN')
+167.248.133.59 - - [08/Jan/2022 04:55:54] " î  ê Çög¶#ûSíe9+ QþJQ¢pSÛº mÛíæÊeN" HTTPStatus.BAD_REQUEST -
+167.248.133.59 - - [08/Jan/2022 04:55:55] "GET / HTTP/1.1" 200 -
+167.248.133.59 - - [08/Jan/2022 04:55:55] "GET / HTTP/1.1" 200 -
+185.25.118.97 - - [08/Jan/2022 07:46:41] code 400, message Bad request syntax ('SSH-2.0-libssh2_1.7.0')
+185.25.118.97 - - [08/Jan/2022 07:46:41] "SSH-2.0-libssh2_1.7.0" HTTPStatus.BAD_REQUEST -
+172.225.122.181 - - [08/Jan/2022 18:23:28] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+172.225.122.181 - - [08/Jan/2022 18:23:28] "GET / HTTP/1.1" 200 -
+172.225.122.181 - - [08/Jan/2022 18:23:29] "GET /mate HTTP/1.1" 200 -
+172.225.122.181 - - [08/Jan/2022 18:23:29] "GET /notice HTTP/1.1" 404 -
+172.225.122.181 - - [08/Jan/2022 18:23:29] "GET /notice HTTP/1.1" 404 -
+172.225.122.181 - - [08/Jan/2022 18:23:29] "GET /mate HTTP/1.1" 200 -
+172.225.122.181 - - [08/Jan/2022 18:23:31] "GET /image/get_image?image_url=10 HTTP/1.1" 304 -
+172.225.122.181 - - [08/Jan/2022 18:23:32] "GET /notice HTTP/1.1" 404 -
+172.225.122.181 - - [08/Jan/2022 18:23:32] "GET /mate HTTP/1.1" 200 -
+172.225.122.173 - - [08/Jan/2022 18:25:59] "POST /login?id=jdc0407&pass=1234 HTTP/1.1" 200 -
+172.225.122.173 - - [08/Jan/2022 18:26:00] "GET /mate HTTP/1.1" 200 -
+172.225.122.173 - - [08/Jan/2022 18:26:00] "GET /mate HTTP/1.1" 200 -
+172.225.122.173 - - [08/Jan/2022 18:26:00] "GET /notice HTTP/1.1" 404 -
+172.225.122.173 - - [08/Jan/2022 18:26:00] "GET /notice HTTP/1.1" 404 -
+172.225.122.173 - - [08/Jan/2022 18:26:20] "GET /image/get_image?image_url=10 HTTP/1.1" 304 -
+172.225.122.173 - - [08/Jan/2022 18:26:50] "GET /mate HTTP/1.1" 200 -
+172.225.122.173 - - [08/Jan/2022 18:26:50] "GET /notice HTTP/1.1" 404 -
+172.225.122.173 - - [08/Jan/2022 18:26:59] "GET /community?community_num=0 HTTP/1.1" 404 -
