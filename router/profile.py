@@ -5,8 +5,6 @@ import json
 from collections import OrderedDict
 import os
 
-
-
 bp = Blueprint('profile_bp',__name__,url_prefix='/profile')
 
 @bp.route("/edit",methods=['POST'])
@@ -18,27 +16,33 @@ def profileEdit():
         job = request.args.get('job')
         profile = request.args.get('profile')
 
-        if func.nicknameCheck(nickname) == "false":
+        if func.nicknameCheck(nickname) == "false" and session['nickname'] != nickname:
             return "false"
 
-
         if 'file' in request.files:
-            #file = request.files['file']
-            file_num = len(os.listdir('./image/'))
+            file = request.files['file']
+            file_num = len(os.listdir('./image/'))+1
             file.save("./image/"+str(file_num)+".jpg")
             url = str(file_num)
         #profile_image_url = request.args.get('profile_image_url')
             func.profile_edit(nickname,job,profile,url,session['id'])
+            print(url)
+            session['profile_image_url'] = url
+            session['nickname'] = nickname
+            session['job'] = job
+            session['profile'] = profile
             return url
 
         else:
             func = sql_module.sql_func()
             func.profile_edit_noimage(nickname, job, profile, session['id'])
+
+
+        session['nickname'] = nickname
+        session['job'] = job
+        session['profile'] = profile
+
         return "true"
-
-
-
-
 
 
 
@@ -51,8 +55,6 @@ def account_manage():
         func = sql_module.sql_func()
         func.account_edit(name,mail,phone,session['id'])
         return "true"
-
-
 
 @bp.route("/pass_change",methods=['POST','GET'])
 def pass_change():

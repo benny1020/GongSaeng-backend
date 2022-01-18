@@ -21,6 +21,7 @@ def get_mate_list():
             js["job"] = res[i]["m_job"]
             js["mail"] = res[i]["m_mail"]
             js["profile"] = res[i]["m_profile"]
+            js["profile_image_url"] = res[i]["profile_image_url"]
             data.append(js)
 
         obj = json.dumps(data, ensure_ascii = False)

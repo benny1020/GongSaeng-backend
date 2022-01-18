@@ -7,16 +7,17 @@ import pymysql
 from . import db_module
 
 host = '18.118.131.221'
-db_id='benny'
-pw='benny'
-db_name='bappy'
+db_id = 'benny'
+pw = 'benny'
+db_name = 'bappy'
+
 
 class sql_func():
     def __init__(self):
         self.sql_db = db_module.Database()
 
-    def idCheck(self,user_id):
-        sql = """select * from bd_member where m_id =\'%s\'"""%(user_id)
+    def idCheck(self, user_id):
+        sql = """select * from bd_member where m_id =\'%s\'""" % (user_id)
         if(len(self.sql_db.executeAll(sql)) == 0):
             return "true"
         else:
@@ -24,67 +25,76 @@ class sql_func():
 
         # 해당 닉네임 중복 체크
     def nicknameCheck(self, user_nickname):
-        sql ="""select * from bd_member where m_nickname = \'%s\'"""%(user_nickname)
-        if(len(self.sql_db.executeAll(sql))==0):
+        sql = """select * from bd_member where m_nickname = \'%s\'""" % (
+            user_nickname)
+        if(len(self.sql_db.executeAll(sql)) == 0):
             return "true"
         else:
             return "false"
 
         #해당 id 중복 체크
-    def loginCheck(self,user_id):
-        sql = """select * from bd_member where m_id = \'%s\'"""%(user_id)
+    def loginCheck(self, user_id):
+        sql = """select * from bd_member where m_id = \'%s\'""" % (user_id)
+
         return self.sql_db.executeAll(sql)
 
         #해당 id의 비밀번호 수정
-    def change_password(self, user_id ,user_pass):
+    def change_password(self, user_id, user_pass):
         sql = """ update bd_member set m_pass = \'%s\' where m_id = \'%s\'
-        """%(user_pass,user_id)
+        """ % (user_pass, user_id)
         self.sql_db.execute(sql)
-
 
         # account 수정
+
     def account_edit(self, user_name, user_mail, user_phone, user_id):
         sql = """update bd_member set m_name = \'%s\', m_mail = \'%s\', m_phone = \'%s\' where m_id = \'%s\'
-        """%(user_name, user_mail, user_phone, user_id)
+        """ % (user_name, user_mail, user_phone, user_id)
         self.sql_db.execute(sql)
 
-
-        #프로필 이미지 수정 하는경우  s
-    def profile_edit(self, nickname, job, profile, profile_image_url,user_id):
+        #프로필 이미지 수정 하는경우
+    def profile_edit(self, nickname, job, profile, profile_image_url, user_id):
         sql = """update bd_member set m_nickname = \'%s\', m_job = \'%s\', m_profile = \'%s\', profile_image_url = \'%s\' where m_id = \'%s\'
-        """%(nickname, job, profile, profile_image_url,user_id)
+        """ % (nickname, job, profile, profile_image_url, user_id)
         self.sql_db.execute(sql)
 
         #프로필 이미지 수정 안할경우
     def profile_edit_noimage(self, nickname, job, profile, user_id):
         sql = """update bd_member set m_nickname = \'%s\', m_job = \'%s\', m_profile = \'%s\' where m_id = \'%s\'
-        """%(nickname, job, profile, user_id)
+        """ % (nickname, job, profile, user_id)
         self.sql_db.execute(sql)
 
         #해당 소속의 회원 리스트 가져오기s
     def get_mate_list(self, department):
-        sql = """select * from bd_member where m_department = \'%s\'"""%(department)
+        sql = """select * from bd_member where m_department = \'%s\'""" % (
+            department)
         return self.sql_db.executeAll(sql)
 
         # 해당 index의 댓글들 가져오기
     def get_comment(self, parent_num):
-        sql = """select * from bd_comment where b_idx = \'%s\'"""%(parent_num)
+        sql = """select * from bd_comment where b_idx = \'%s\'""" % (
+            parent_num)
         return self.sql_db.executeAll(sql)
 
         # 유저 id로 이미지 가져오기
     def get_user_image_url(self, user_id):
-        sql = """ select profile_image_url from bd_member where m_id = \'%s\'"""%(user_id)
-        return self.sql_db.executeAll(sql)[0]['profile_image_url']
+        sql = """ select profile_image_url from bd_member where m_id = \'%s\'""" % (
+            user_id)
+        temp = self.sql_db.executeAll(sql)
+        if temp == None or temp[0]['profile_image_url']=="":
+            return None
+        else:
+            return temp[0]['profile_image_url']
 
-    def write_comment(self, parent_num,user_id, user_nickname, contents, time):
+    def write_comment(self, parent_num, user_id, user_nickname, contents, time):
         idx = comment_last_idx()+1
         sql = """insert into bd_comment(co_idx, b_idx, m_id, m_nickname, co_contents, co_regdate)
             values('%s','%s','%s','%s','%s','%s')
-        """%(idx,parent_num,user_id,user_nickname,contents, time)
+        """ % (idx, parent_num, user_id, user_nickname, contents, time)
         self.sql_db.execute(sql)
 
-    def get_notice_list(self, department):
-        sql = """select * from notice_list where department = \'%s\'"""%(department)
+    def get_notice_list(self, department, page):
+        sql = """select * from notice_list where department = \'%s\' order by idx desc limit %d""" % (
+            department, page*10)
         return self.sql_db.executeAll(sql)
 
     def get_community_index(self):
@@ -96,20 +106,26 @@ class sql_func():
         board_count = board_count[0]['cnt']
         return notice_count + board_count
 
-    def get_community_post(self,code):
-        sql = """select * from bd_board where bc_code = \'%s\'"""%(code)
+    def get_community_post(self, code, page):
+        sql = """select * from bd_board where bc_code = \'%s\' order by b_idx desc limit %d,%d""" % (
+            code, (page-1)*15,15)
         return self.sql_db.executeAll(sql)
 
     def get_community_post_id(self, user_id):
-        sql = """select * from bd_board where m_id = \'%s\'"""%(user_id)
+        sql = """select * from bd_board where m_id = \'%s\'""" % (user_id)
         return self.sql_db.executeAll(sql)
 
-    def get_gather_status(self):
-        sql = """select * from bd_together """
+    def get_gather_status(self,page):
+        sql = """select * from bd_together order by b_idx desc limit %d,%d """%((page-1)*15,15)
         return self.sql_db.executeAll(sql)
+
+    def get_gather_status_byidx(self,idx):
+        sql = """select * from bd_together where b_idx = %d """%(idx)
+        return self.sql_db.executeAll(sql).rows[0]['gather_status']
+
 
     def get_comment_num(self, b_idx):
-        sql = """select count(*) as cnt from bd_comment where b_idx = %s"""%(b_idx)
+        sql = """select count(*) as cnt from bd_comment where b_idx = %s""" % (b_idx)
         return self.sql_db.executeAll(sql)[0]['cnt']
 
     def get_market_info(self):
@@ -117,81 +133,80 @@ class sql_func():
         return self.sql_db.executeAll(sql)
 
     def increase_comment_num(self, b_idx):
-        sql = """ update bd_board set b_cnt = b_cnt + 1 where b_idx = \'%s\'"""%(b_idx)
+        sql = """ update bd_board set b_cnt = b_cnt + 1 where b_idx = \'%s\'""" % (
+            b_idx)
         self.sql_db.execute(sql)
 
+
+
     def get_community_name(self, b_code):
-        sql = """select bd_name from bd_list where bd_code = \'%s\'"""%(b_code)
+        sql = """select bd_name from bd_list where bd_code = \'%s\'""" % (
+            b_code)
         return self.sql_db.executeAll(sql)[0]['bd_name']
 
-    def get_comment_byid(self,user_id):
-        sql = """select * from bd_comment where m_id = \'%s\'"""%(user_id)
+    def get_comment_byid(self, user_id):
+        sql = """select * from bd_comment where m_id = \'%s\'""" % (user_id)
         return self.sql_db.executeAll(sql)
 
     def get_community_code_byidx(self, parent_num):
-        sql = """select * from bd_board where b_idx = \'%s\'"""%(parent_num)
+        sql = """select * from bd_board where b_idx = \'%s\'""" % (parent_num)
         return self.sql_db.executeAll(sql)[0]['bc_code']
 
-    def get_community_name_byidx(self,idx):
+    def get_community_name_byidx(self, idx):
         return self.get_community_name(self.get_community_code_byidx(idx))
 
     def get_community_post_byidx(self, idx):
-        sql = """ select * from bd_board where b_idx = \'%s\'"""%(idx)
+        sql = """ select * from bd_board where b_idx = \'%s\'""" % (idx)
         return self.sql_db.executeAll(sql)[0]
 
         #함께게시판 모집 상태 아직안됨
     def write_together_false(self, b_idx):
-        sql = """insert into bd_together(b_idx, gather_status) values('%s','%s')"""%(b_idx, '0')
+        sql = """insert into bd_together(b_idx, gather_status) values('%s','%s')""" % (
+            b_idx, '0')
         self.sql_db.execute(sql)
 
         #함께게시판 모집 상태 완료로 수정
     def write_together_true(self, b_idx):
-        sql = """update bd_together set gather_status = \'%s\' where b_idx = \'%s\'"""%('1',b_idx)
+        sql = """update bd_together set gather_status = \'%s\' where b_idx = \'%s\'""" % (
+            '1', b_idx)
         self.sql_db.execute(sql)
 
         # 커뮤니티 글 작성 기본적인 것만!
     def write_community(self, index, code, user_id, user_name, title, contents, time):
         #b_cnt = 0
         sql = """insert into bd_board(b_idx, bc_code, m_id, m_name, b_title, b_contents, b_regdate,b_cnt)
-                values('%s','%s','%s','%s','%s','%s','%s','%d')"""%(index,code,user_id,user_name,title,contents,time,0)
+                values('%s','%s','%s','%s','%s','%s','%s','%d')""" % (index, code, user_id, user_name, title, contents, time, 0)
         self.sql_db.execute(sql)
 
         # 이미지 url 넣기
     def write_community_image(self, idx, image_url):
-        print("idx: ",idx)
-        print("img url:",image_url)
-        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'"""%(str(image_url),idx)
+        print("idx: ", idx)
+        print("img url:", image_url)
+        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'""" % (
+            str(image_url), idx)
         self.sql_db.execute(sql)
 
         #장터게시판 초기 price status 넣기
     def write_market_initial(self, b_idx, price):
-        sql = """insert into bd_market(b_idx, price, status) values('%s','%s','%s')"""%(b_idx,price,'0')
+        sql = """insert into bd_market(b_idx, price, status) values('%s','%s','%s')""" % (
+            b_idx, price, '0')
         self.sql_db.execute(sql)
 
         # 판매완료
     def write_market_true(self, b_idx):
-        sql = """update bd_market set status = \'%s\' where b_idx = \'%s\'"""%('1',b_idx)
+        sql = """update bd_market set status = \'%s\' where b_idx = \'%s\'""" % (
+            '1', b_idx)
         self.sql_db.execute(sql)
-
-
-
-
-
-
 
     def __del__(self):
         self.sql_db.close()
 
 
-
-
-
-
-
 def comment_last_idx():
 
-    conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
-    curs=conn.cursor(pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=host, port=3306, user=db_id,
+                           password=pw, db=db_name, charset='utf8')
+    curs = conn.cursor(pymysql.cursors.DictCursor)
     sql = """select co_idx from bd_comment order by co_idx desc limit 1"""
     curs.execute(sql)
 
@@ -200,11 +215,13 @@ def comment_last_idx():
     conn.close()
     return rows[0]['co_idx']
 
+
 def board_last_idx():
 
-    conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
+    conn = pymysql.connect(host=host, port=3306, user=db_id,
+                           password=pw, db=db_name, charset='utf8')
 
-    curs=conn.cursor(pymysql.cursors.DictCursor)
+    curs = conn.cursor(pymysql.cursors.DictCursor)
     sql = """select b_idx from bd_board order by b_idx desc limit 1"""
     curs.execute(sql)
 
@@ -215,8 +232,9 @@ def board_last_idx():
 
 
 def member_last_idx():
-    conn = pymysql.connect(host=host, port=3306, user=db_id, password=pw, db=db_name, charset='utf8')
-    curs=conn.cursor(pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=host, port=3306, user=db_id,
+                           password=pw, db=db_name, charset='utf8')
+    curs = conn.cursor(pymysql.cursors.DictCursor)
     sql = """select m_idx from bd_member order by m_idx desc limit 1"""
     curs.execute(sql)
 

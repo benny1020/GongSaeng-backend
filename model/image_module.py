@@ -16,9 +16,12 @@ def save_image(image):
 
 #[1,2,3,4] -> "1,2,3,4"
 def url_to_db(image_url):
+    print(image_url)
     if len(image_url)==1:
         return str(image_url[0])
+    for i in range(len(image_url)):
+        image_url[i]=str(image_url[i])
     return ','.join(image_url)
 # "1,2,3,4"->[1,2,3,4]
-def db_ro_url(db_url):
+def db_to_url(db_url):
     return db_url.split(',')
