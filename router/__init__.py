@@ -32,12 +32,10 @@ app.register_blueprint(notify.bp)
 @app.route('/test',methods=['POST'])
 def test():
     if request.method == 'POST':
-        func = sql_module.sql_func()
-        image_url = 30
-        idx = 30
-        sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'"""%(str(image_url),idx)
-        func.sql_db.execute(sql)
-        return "true"
+        if 'key' in request.args:
+            return "true"
+        else:
+            return "false"
 
 
 
@@ -65,6 +63,8 @@ def index():
         if session['job']!="":
             js['job']=session['job']
         js['phone']=session['phone']
+        js['mail']=session['mail']
+        
         if session['profile']!="":
             js['profile']=session['profile']
         if session['profile_image_url']!="":

@@ -54,6 +54,10 @@ def account_manage():
         phone = request.args.get('phone')
         func = sql_module.sql_func()
         func.account_edit(name,mail,phone,session['id'])
+        session['name']=name
+        session['mail']=mail
+        session['phone']=phone
+        print("수정 후 번호",phone)
         return "true"
 
 @bp.route("/pass_change",methods=['POST','GET'])

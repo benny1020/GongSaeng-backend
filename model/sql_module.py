@@ -70,9 +70,9 @@ class sql_func():
         return self.sql_db.executeAll(sql)
 
         # 해당 index의 댓글들 가져오기
-    def get_comment(self, parent_num):
-        sql = """select * from bd_comment where b_idx = \'%s\'""" % (
-            parent_num)
+    def get_comment(self, parent_num,page):
+        sql = """select * from bd_comment where b_idx = \'%s\' order by b_idx desc limit %d,%d""" % (
+            parent_num, (page-1)*15,15)
         return self.sql_db.executeAll(sql)
 
         # 유저 id로 이미지 가져오기
@@ -120,16 +120,20 @@ class sql_func():
         return self.sql_db.executeAll(sql)
 
     def get_gather_status_byidx(self,idx):
-        sql = """select * from bd_together where b_idx = %d """%(idx)
-        return self.sql_db.executeAll(sql).rows[0]['gather_status']
+        sql = """select * from bd_together where b_idx = %s """%(idx)
+        return self.sql_db.executeAll(sql)[0]['gather_status']
+
+    def get_market_info_byidx(self,idx):
+        sql = """select * from bd_market where b_idx = %s """%(idx)
+        return self.sql_db.executeAll(sql)[0]
 
 
     def get_comment_num(self, b_idx):
         sql = """select count(*) as cnt from bd_comment where b_idx = %s""" % (b_idx)
         return self.sql_db.executeAll(sql)[0]['cnt']
 
-    def get_market_info(self):
-        sql = """select * from bd_market """
+    def get_market_info(self,page):
+        sql = """select * from bd_market order by b_idx desc limit %d,%d """%((page-1)*15,15)
         return self.sql_db.executeAll(sql)
 
     def increase_comment_num(self, b_idx):
@@ -172,10 +176,10 @@ class sql_func():
         self.sql_db.execute(sql)
 
         # 커뮤니티 글 작성 기본적인 것만!
-    def write_community(self, index, code, user_id, user_name, title, contents, time):
+    def write_community(self, index, code, user_id, user_name, title, contents, time, category):
         #b_cnt = 0
-        sql = """insert into bd_board(b_idx, bc_code, m_id, m_name, b_title, b_contents, b_regdate,b_cnt)
-                values('%s','%s','%s','%s','%s','%s','%s','%d')""" % (index, code, user_id, user_name, title, contents, time, 0)
+        sql = """insert into bd_board(b_idx, bc_code, m_id, m_name, b_title, b_contents, b_regdate,b_cnt,category)
+                values('%s','%s','%s','%s','%s','%s','%s','%d','%s')""" % (index, code, user_id, user_name, title, contents, time, 0,category)
         self.sql_db.execute(sql)
 
         # 이미지 url 넣기

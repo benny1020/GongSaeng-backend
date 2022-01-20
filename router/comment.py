@@ -13,8 +13,9 @@ bp = Blueprint('comment_bp', __name__, url_prefix='/comment')
 def read_comment():
     if request.method == 'GET':
         parent_num = str(request.args.get('parent_num'))
+        page = request.args.get('page',type=int)
         func = sql_module.sql_func()
-        res = func.get_comment(parent_num)
+        res = func.get_comment(parent_num,page)
 
         data = []
 
