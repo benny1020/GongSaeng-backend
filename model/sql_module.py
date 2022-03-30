@@ -6,7 +6,7 @@ import numpy as np
 import pymysql
 from . import db_module
 
-host = '18.118.131.221'
+host = '127.0.0.1'
 db_id = 'benny'
 pw = 'benny'
 db_name = 'bappy'

@@ -9,6 +9,7 @@ from . import mate
 from . import comment
 from . import community
 from . import notify
+from . import thunder
 from model import db_module
 from model import sql_module
 from model import image_module
@@ -24,6 +25,7 @@ app.register_blueprint(mate.bp)
 app.register_blueprint(comment.bp)
 app.register_blueprint(community.bp)
 app.register_blueprint(notify.bp)
+app.register_blueprint(thunder.bp)
 #app.config['db_ip']="18.118.131.221"
 #app.config['db_ip']="127.0.0.1"
 
@@ -64,7 +66,7 @@ def index():
             js['job']=session['job']
         js['phone']=session['phone']
         js['mail']=session['mail']
-        
+
         if session['profile']!="":
             js['profile']=session['profile']
         if session['profile_image_url']!="":
