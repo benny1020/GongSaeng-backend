@@ -104,7 +104,10 @@ class sql_func():
         sql = """select count(*) as cnt from bd_board"""
         board_count = self.sql_db.executeAll(sql)
         board_count = board_count[0]['cnt']
-        return notice_count + board_count
+        sql = """select count(*) as cnt from bd_thunder"""
+        thunder_count = self.sql_db.executeAll(sql)
+        thunder_count = thunder_count[0]['cnt']
+        return notice_count + board_count + thunder_count
 
     def get_community_post(self, code, page):
         sql = """select * from bd_board where bc_code = \'%s\' order by b_idx desc limit %d,%d""" % (
@@ -140,8 +143,6 @@ class sql_func():
         sql = """ update bd_board set b_cnt = b_cnt + 1 where b_idx = \'%s\'""" % (
             b_idx)
         self.sql_db.execute(sql)
-
-
 
     def get_community_name(self, b_code):
         sql = """select bd_name from bd_list where bd_code = \'%s\'""" % (
