@@ -30,6 +30,8 @@ def login():
             session['profile'] = rows[0]['m_profile']
             session['job'] = rows[0]['m_job']
             session['profile_image_url'] = rows[0]['profile_image_url']
+            print(session['profile_image_url'])
+            session['idx'] = rows[0]['m_idx']
 
         if(len(rows) == 0 or rows[0]['approve'] == 0):
             approve_num = "false"
@@ -42,5 +44,5 @@ def login():
         js['approve'] = approve_num
         data.append(js)
         obj = json.dumps(data, ensure_ascii=False)
-        print(data)
+        session.modified=True
         return obj

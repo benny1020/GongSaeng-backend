@@ -7,6 +7,8 @@ import numpy as np
 import pymysql
 from . import db_module
 from . import sql_module
+from model import image_module
+
 
 import json
 
@@ -33,8 +35,8 @@ class Thunder():
         self.participants_num=0
         self.total_num=0
         self.region=""
-
-    def setThunder(self,region,writer_nickname,writer_image,metapolis,title,contents,
+        self.thunder_participants=""
+    def setThunder(self,thunder_participants,thunder_idx,region,writer_nickname,writer_image,metapolis,title,contents,
                  contents_image,meet_time,
                  register_time, location,
                  detail_location,location_url,
@@ -42,9 +44,13 @@ class Thunder():
                  total_num
                  ):
         #--- 이미지 처리
+        self.idx = thunder_idx
         self.region = region
-        self.writer_nickname = writer_nickname
-        self.writer_image = writer_image
+        self.writer_nickname = session['nickname']
+        self.writer_image = session['profile_image_url']
+        #self.writer_nickname = "benny"
+        #self.writer_image = "3"
+
         self.metapolis = metapolis
         self.title = title
         self.location_url = location_url
@@ -57,13 +63,14 @@ class Thunder():
         if participants_image != None:
             self.participants_image = participants_image
         self.total_num = total_num
+        self.thunder_participants=thunder_participants
 
     def setThunderRequest(self, args):
         self.region = args.get("region")
         #self.writer_nickname = args.get("writer_nickname")
         #self.writer_image = args.get("writer_image")
-        self.writer_nickname = "benny"
-        self.writer_image = "3"
+        #self.writer_nickname = "benny"
+        #self.writer_image = "3"
         self.metapolis = args.get("metapolis")
         self.title = args.get("title")
         self.contents = args.get("contents")
@@ -73,6 +80,10 @@ class Thunder():
         self.location_url = args.get("location_url")
         self.detail_location = args.get("detail_location")
         self.total_num = args.get("total_num",type=int)
+        self.thunder_participants = session['idx']
+        self.participants_image = session['profile_image_url']
+        self.writer_image = session['profile_image_url']
+        self.writer_nickname = session['nickname']
 
 
 
@@ -80,14 +91,19 @@ class thunderDao():
     def __init__(self):
         self.db = db_module.Database()
 
+    def updateThunder(self,th):
+        sql = """
+            update bd_thunder set thunder_participants = '%s' and participants_num = '%d' and participants_image = '%s' where thunder_idx = '%d'
+        """%(th.thunder_participants,th.participants_num,th.participants_image,th.idx)
+
 
     def insertThunder(self,th):
         thunder_idx = sql_module.sql_func().get_community_index()+1
         sql = """
-        insert into bd_thunder(thunder_idx,region,participants_num,writer_nickname, writer_image, metapolis, title, contents,
+        insert into bd_thunder(participants_image,thunder_participants,thunder_idx,region,participants_num,writer_nickname, writer_image, metapolis, title, contents,
         contents_image,meet_time,register_time,location,detail_location,location_url,total_num)
-        values('%d','%s',%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)
-        """%(thunder_idx,th.region,0,th.writer_nickname,th.writer_image,th.metapolis,th.title,th.contents,th.contents_image,th.meet_time,
+        values('%s','%s','%d','%s',%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)
+        """%(th.participants_image,th.thunder_participants,thunder_idx,th.region,0,th.writer_nickname,th.writer_image,th.metapolis,th.title,th.contents,th.contents_image,th.meet_time,
              th.register_time,th.location,th.detail_location,th.location_url,th.total_num)
         self.db.execute(sql)
 
@@ -95,16 +111,19 @@ class thunderDao():
     # contetents_image, meet_time
     # register_time, location,detail_location
     # location_url, participants_image
-    # participants_num, total_num
+    # participants_num, total_nums
     def getThunder(self,idx):
         sql = """select * from bd_thunder where thunder_idx = %d"""%(idx)
         row = self.db.executeAll(sql)[0]
         th = Thunder()
-        th.setThunder(row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
+        th.setThunder(row['thunder_participants'],row['thunder_idx'],row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
                      row["contents_image"],row["meet_time"],
                      row["register_time"], row["location"],
                      row["detail_location"],row["location_url"],
                      row["participants_image"],row["total_num"])
+
+        th.contents_image = image_module.db_to_url(th.contents_image)
+        th.contents_image.pop(0)
         th.meet_time = str(th.meet_time)
         th.register_time = str(th.register_time)
         return th
@@ -117,13 +136,15 @@ class thunderDao():
         thunderList = []
         for row in rows:
             th = Thunder()
-            th.setThunder(row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
+            th.setThunder(row['thunder_participants'],row['thunder_idx'],row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
                          row["contents_image"],row["meet_time"],
                          row["register_time"], row["location"],
                          row["detail_location"],row["location_url"],
                          row["participants_image"],row["total_num"])
             th.meet_time = str(th.meet_time)
             th.register_time = str(th.register_time)
+            th.contents_image = image_module.db_to_url(th.contents_image)
+            th.contents_image.pop(0)
             thunderList.append(th)
 
         return thunderList
@@ -144,7 +165,7 @@ class thunderDao():
             thunderList = []
             for row in rows:
                 th = Thunder()
-                th.setThunder(row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
+                th.setThunder(row['thunder_participants'],row['thunder_idx'],row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
                              row["contents_image"],row["meet_time"],
                              row["register_time"], row["location"],
                              row["detail_location"],row["location_url"],
@@ -156,24 +177,37 @@ class thunderDao():
             return thunderList
         else:
             if order == "register":
-                sql = """
-                    select * from bd_thunder where meet_time  >= '%s' order by register_time asc limit %d,%d;
-                    """%((datetime.now().strftime("%Y-%m-%d %H:%M:%S"),(page-1)*15,15))
-            else:
-                sql = """
-                    select * from bd_thunder where region = '%s' and metapolis = '%s' and meet_time  >= '%s' order by meet_time asc limit %d,%d;
-                    """%(region,metapolis,datetime.now().strftime("%Y-%m-%d %H:%M:%S"),(page-1)*15,15)
+                if region == metapolis:
+                    sql = """
+                        select * from bd_thunder where meet_time  >= '%s' and metapolis = '%s' order by register_time asc limit %d,%d;
+                        """%((datetime.now().strftime("%Y-%m-%d %H:%M:%S"),metapolis,(page-1)*15,15))
+
+                else:
+                    sql = """
+                        select * from bd_thunder where meet_time  >= '%s' and region = '%s' and metapolis = '%s' order by register_time asc limit %d,%d;
+                        """%((datetime.now().strftime("%Y-%m-%d %H:%M:%S"),region,metapolis,(page-1)*15,15))
+            else: # order 마감순
+                if region == metapolis:
+                    sql = """
+                        select * from bd_thunder where meet_time  >= '%s' and metapolis = '%s' order by meet_time limit %d,%d;
+                        """%((datetime.now().strftime("%Y-%m-%d %H:%M:%S"),metapolis,(page-1)*15,15))
+
+                else:
+                    sql = """
+                        select * from bd_thunder where region = '%s' and metapolis = '%s' and meet_time  >= '%s' order by meet_time asc limit %d,%d;
+                        """%(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),region,metapolis,(page-1)*15,15)
             rows = self.db.executeAll(sql)
             thunderList = []
             for row in rows:
                 th = Thunder()
-                th.setThunder(row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
+                th.setThunder(row['thunder_participants'],row['thunder_idx'],row['region'],row["writer_nickname"],row["writer_image"],row["metapolis"],row["title"],row["contents"],
                              row["contents_image"],row["meet_time"],
                              row["register_time"], row["location"],
                              row["detail_location"],row["location_url"],
                              row["participants_image"],row["total_num"])
                 th.meet_time = str(th.meet_time)
                 th.register_time = str(th.register_time)
+                th.contents_image = image_module.db_to_url(th.contents_image)[0]
                 thunderList.append(th)
 
             return thunderList
