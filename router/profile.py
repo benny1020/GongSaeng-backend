@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session
 from model import db_module
 from model import sql_module
+from model import thunder_dao
 import json
 from collections import OrderedDict
 import os
@@ -26,7 +27,6 @@ def profileEdit():
             url = str(file_num)
         #profile_image_url = request.args.get('profile_image_url')
             func.profile_edit(nickname,job,profile,url,session['id'])
-            print(url)
             session['profile_image_url'] = url
             session['nickname'] = nickname
             session['job'] = job
@@ -57,7 +57,6 @@ def account_manage():
         session['name']=name
         session['mail']=mail
         session['phone']=phone
-        print("수정 후 번호",phone)
         return "true"
 
 @bp.route("/pass_change",methods=['POST','GET'])
@@ -97,15 +96,28 @@ def mycomment():
         func = sql_module.sql_func()
         user_id = session['id']
         res = func.get_comment_byid(user_id)
+        dao = thunder_dao.thunderDao()
 
         data = []
 
         for i in range(len(res)):
             js = OrderedDict()
-            js['title'] = res[i]['co_contents']
-            js['board_name'] = func.get_community_name_byidx(res[i]['b_idx'])
-            js['time'] = res[i]['co_regdate']
-            js['post_index'] = res[i]['b_idx']
+            try:
+                js['board_name'] = func.get_community_name_byidx(res[i]['b_idx'])
+                js['title'] = res[i]['co_contents']
+                js['time'] = res[i]['co_regdate']
+                js['post_index'] = res[i]['b_idx']
+                js['comment_num'] = 2222
+
+            except:
+                th = dao.getThunder(res[i]['b_idx'])
+                js['board_name'] = "번개게시판"
+                js['title']=th.title
+                js['time']=th.register_time
+                js['post_index']= res[i]['b_idx']
+                js['comment_num'] = 7777
+
+
             data.append(js)
 
         obj = json.dumps(data, ensure_ascii = False)

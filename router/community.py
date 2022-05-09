@@ -55,7 +55,6 @@ def write_community():
             func.write_community_image(idx, image_module.url_to_db(image_url))
 
         if code == '3':  # 함께게시판인경우
-            print("함께게시판입니다.")
             func.write_together_false(idx)
 
         elif code == '4':  # 장터게시판인경우

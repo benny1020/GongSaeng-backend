@@ -48,20 +48,18 @@ class User():
 
 
 class UserDao():
-    def __init__():
+    def __init__(self):
         self.database = db_module.Database()
 
 
     def getUserInfo(self,idx):
-        sql = "select * from bd_memeber where m_idx = '%d'"%(idx)
-        res = self.executeOne(sql)
+        sql = "select * from bd_member where m_idx = '%s'"%(idx)
+        res = self.database.executeOne(sql)
         user = User()
         user.setUser(res)
         return user
 
     def updateUserInfo(self,user):
-        sql = """update bd_member set m_id = '%s' and m_name = '%s' and m_gender = '%s'
-                m_profile = '%s' and m_mail = '%s' and m_job = '%s' and m_birth = '%s' and m_phone = '%s' and
-                m_department = '%s' and m_nickname = '%s' and approve = '%s' and profile_image = '%s' and m_thunder = '%s'
-                where m_idx = '%d'
-        """%(user.id,user.name,user.gender,user.profile,user.mail,user.job,user.birth,user.phone,user.department,user.nickname,user.approve,user.profile_image_url,user.thunder,user.idx)
+        sql = """update bd_member set m_thunder = '%s' where m_idx = '%d'
+        """%(user.thunder,user.idx)
+        self.database.execute(sql)

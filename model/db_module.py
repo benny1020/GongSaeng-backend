@@ -19,7 +19,7 @@ class Database():
         self.cursor.execute(query,args)
         row = self.cursor.fetchone()
         #self.db.commit()
-        #return row
+        return row
 
     def executeAll(self, query, args={}):
         self.cursor.execute(query, args)

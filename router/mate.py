@@ -17,7 +17,7 @@ def get_mate_list():
         data = []
         for i in range(len(res)):
             js = OrderedDict()
-            js["name"] = res[i]["m_name"]
+            js["name"] = res[i]["m_nickname"]
             js["job"] = res[i]["m_job"]
             js["mail"] = res[i]["m_mail"]
             js["profile"] = res[i]["m_profile"]

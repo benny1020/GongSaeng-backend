@@ -155,6 +155,7 @@ class sql_func():
 
     def get_community_code_byidx(self, parent_num):
         sql = """select * from bd_board where b_idx = \'%s\'""" % (parent_num)
+        #print(self.sql_db.executeAll(sql))
         return self.sql_db.executeAll(sql)[0]['bc_code']
 
     def get_community_name_byidx(self, idx):
@@ -185,8 +186,6 @@ class sql_func():
 
         # 이미지 url 넣기
     def write_community_image(self, idx, image_url):
-        print("idx: ", idx)
-        print("img url:", image_url)
         sql = """update bd_board set image_url = \'%s\' where b_idx = \'%d\'""" % (
             str(image_url), idx)
         self.sql_db.execute(sql)
