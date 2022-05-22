@@ -41,7 +41,7 @@ def thunder_cancel():
         else:
             user_thunder = image_module.db_to_url(user_info.thunder)
 
-        if
+        
 
         if str(session['idx']) not in thunder_participants:
             print("already cancel")
